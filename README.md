@@ -1,3 +1,10 @@
+# 배경
+
+이번, Wanted에서 진행하는 OnBoarding Challenge 1월 프론트엔드에 참여하려고 합니다.
+참여하기 전 사전에 간단한 Todo App을 만들어 제출하라는 미션이 있어 React & TypeScript로 제공한 API에 맞는 프론트엔드 서버를 구현하려고 합니다. 
+과제를 진행하면서 학습하거나, 요구사항들 관리는 Notion에서 진행하려고 합니다.
+[Wanted OnBoarding Challenge](https://www.notion.so/Wanted-OnBoarding-Challenge-b0b888a2b9604b2f9605c65666cd0046) 
+
 # Subject
 
 [사전 과제 안내](https://www.notion.so/e5b066df5287430480c18ebf9ca7175e)
@@ -30,5 +37,3 @@
         - [ ]  개별 Todo를 조회 순서에 따라 페이지 뒤로가기를 통해 조회가 가능
     - [ ]  새로고침 없이 데이터 정합성 구현
         - [ ]  수정되는 Todo 내용이 목록에서도 실시간으로 반영
-
-[API 정리](https://www.notion.so/ae79d3f8475441858ed2e9028a6bbb0e)
