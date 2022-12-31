@@ -9,26 +9,35 @@ const HomeDiv = styled.div`
 `;
 
 const LogoDiv = styled.div`
-    grid-row: 2;
-    display: grid;
-    grid-template-columns: 1fr 6fr 14fr;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 1fr 6fr 14fr;
 `;
 
 const ImgDiv = styled.div`
-    grid-column: 2;
+  font-family: NanumMyeongjo;
+  font-size: 60px;
+  font-weight: bold;
+  grid-column: 2;
 `;
 
 const InputDiv = styled.div`
-    grid-row: 4;
-    display: grid;
-    grid-template-columns: 2.5fr 6.5fr 2fr 7fr 2fr;
+  grid-row: 4;
+  display: grid;
+  grid-template-columns: 2.5fr 6.5fr 2fr 7fr 2fr;
 `;
 
 const IdDiv = styled.div`
-    grid-column: 2;
+  font-family: NanumMyeongjo;
+  font-size: 20px;
+  font-weight: bold;
+  grid-column: 2;
 `;
 const PwDiv = styled.div`
-    grid-column: 4;
+  font-family: NanumMyeongjo;
+  font-size: 20px;
+  font-weight: bold;
+  grid-column: 4;
 `;
 
 export default function Home() {
@@ -44,9 +53,7 @@ export default function Home() {
   return (
     <HomeDiv>
       <LogoDiv>
-        <ImgDiv>
-            test
-        </ImgDiv>  
+        <ImgDiv>Todo List</ImgDiv>
       </LogoDiv>
       <InputDiv>
         <IdDiv>ID: </IdDiv>
