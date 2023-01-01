@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { authApi } from "../lib/authAPI";
 import * as HomeStyled from "../styles/HomeStyle";
 
 const validate = (email: string, password: string): number => {
@@ -25,6 +26,14 @@ export default function Home() {
   const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
+  const onClickLogin = async () => {
+    try {
+        const respone = await authApi.postLogin(email, password);
+        console.log(respone);
+    } catch (e: any) {
+        console.log(e);
+    }
+  }
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (token) {
@@ -50,7 +59,7 @@ export default function Home() {
         </HomeStyled.PwDiv>
       </HomeStyled.InputDiv>
       <HomeStyled.ButtonDiv>
-        <HomeStyled.ButtonLogin disabled={val}>Login</HomeStyled.ButtonLogin>
+        <HomeStyled.ButtonLogin onClick={onClickLogin} disabled={val}>Login</HomeStyled.ButtonLogin>
         <HomeStyled.ButtonJoin>Join</HomeStyled.ButtonJoin>
       </HomeStyled.ButtonDiv>
     </HomeStyled.HomeDiv>
