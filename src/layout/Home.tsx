@@ -1,91 +1,58 @@
-import { useEffect } from "react";
-import styled from "styled-components";
+import { useEffect, useState } from "react";
+import * as HomeStyled from "../styles/HomeStyle";
 
-const HomeDiv = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: grid;
-  grid-template-rows: 2fr 6fr 1fr 2fr 2fr 1fr;
-`;
-
-const LogoDiv = styled.div`
-  grid-row: 2;
-  display: grid;
-  grid-template-columns: 1fr 6fr 14fr;
-  font-family: NanumMyeongjo;
-  font-size: 60px;
-  font-weight: bold;
-`;
-
-const ImgDiv = styled.div`
-  grid-column: 2;
-`;
-
-const InputDiv = styled.div`
-  grid-row: 4;
-  display: grid;
-  grid-template-columns: 2.5fr 6.5fr 2fr 7fr 2fr;
-  font-family: NanumMyeongjo;
-  font-size: 20px;
-  font-weight: bold;
-`;
-
-const IdDiv = styled.div`
-  grid-column: 2;
-`;
-const PwDiv = styled.div`
-  grid-column: 4;
-`;
-
-const ButtonDiv = styled.div`
-  grid-row: 5;
-  display: grid;
-  grid-template-columns: 2.5fr 6.5fr 2fr 7fr 2fr;
-`;
-
-const ButtonLogin = styled.button`
-  grid-column: 2;
-  font-family: NanumMyeongjo;
-  font-size: 20px;
-  font-weight: bold;
-`;
-
-const ButtonJoin = styled.button`
-  grid-column: 4;
-  font-family: NanumMyeongjo;
-  font-size: 20px;
-  font-weight: bold;
-`;
+const validate = (email: string, password: string): number => {
+  let result: number = 0;
+  const regex =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+  if (!regex.test(email)) {
+    result = 1;
+  }
+  if (password.length < 8) {
+    if (result === 1) result = 3;
+    else result = 2;
+  }
+  return result;
+};
 
 export default function Home() {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [val, setVal] = useState<boolean>(true);
+  const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+  const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    const rtoken = sessionStorage.getItem("rtoken");
-    if (token || rtoken) {
-      sessionStorage.removeItem("token");
-      sessionStorage.removeItem("rtoken");
+    if (token) {
     }
   }, []);
-
+  useEffect(() => {
+    if (validate(email, password) === 0) setVal(false);
+    else setVal(true);
+  }, [email, password]);
   return (
-    <HomeDiv>
-      <LogoDiv>
-        <ImgDiv>Todo List</ImgDiv>
-      </LogoDiv>
-      <InputDiv>
-        <IdDiv>
+    <HomeStyled.HomeDiv>
+      <HomeStyled.LogoDiv>
+        <HomeStyled.ImgDiv>Todo List</HomeStyled.ImgDiv>
+      </HomeStyled.LogoDiv>
+      <HomeStyled.InputDiv>
+        <HomeStyled.IdDiv>
           ID:
-          <input />
-        </IdDiv>
-        <PwDiv>
+          <input type="email" value={email} onChange={onChangeEmail} />
+        </HomeStyled.IdDiv>
+        <HomeStyled.PwDiv>
           PW:
-          <input />
-        </PwDiv>
-      </InputDiv>
-      <ButtonDiv>
-        <ButtonLogin>Login</ButtonLogin>
-        <ButtonJoin>Join</ButtonJoin>
-      </ButtonDiv>
-    </HomeDiv>
+          <input type="password" value={password} onChange={onChangePassword} />
+        </HomeStyled.PwDiv>
+      </HomeStyled.InputDiv>
+      <HomeStyled.ButtonDiv>
+        <HomeStyled.ButtonLogin disabled={val}>Login</HomeStyled.ButtonLogin>
+        <HomeStyled.ButtonJoin>Join</HomeStyled.ButtonJoin>
+      </HomeStyled.ButtonDiv>
+    </HomeStyled.HomeDiv>
   );
 }
