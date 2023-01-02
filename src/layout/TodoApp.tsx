@@ -3,53 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { todoApi } from "../lib/todoAPI";
 import StateModal from "../components/modals/StateModal";
 import styled from "styled-components";
-
-const TodoDiv = styled.div`
-  witdh: 100vw;
-  height: 100vh;
-  display: grid;
-  grid-template-columns: 5fr 19fr;
-  grid-template-rows: 1.5fr 10fr 1fr;
-`;
-const HeaderDiv = styled.div`
-    grid-row: 1;
-    grid-column: 2;
-    display: grid;
-    grid-template-columns: 12fr 7fr;
-`;
-const LogoDiv = styled.div`
-    grid-row: 1;
-    grid-column: 1;
-    font-family: NanumMyeongjo;
-    font-size: 60px;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 10px;
-`;
-const ListDiv = styled.div`
-    grid-row: 2;
-    grid-column: 1;
-    align-content: center;
-    justify-content: center;
-`;
-const ContentDiv = styled.div`
-    grid-row: 2;
-    grid-column: 2;
-    align-content: center;
-    justify-content: center;
-`;
-const LogOutDiv = styled.div`
-    grid-row: 3;
-    grid-column: 1;
-    align-content: center;
-    justify-content: center;
-`;
-const LogDiv = styled.div`
-    grid-row: 3;
-    grid-column: 2;
-    align-content: center;
-    justify-content: center;
-`;
+import * as TodoStyle from "../styles/TodoStyle"
 
 interface stateType {
   stateImg: string;
@@ -78,20 +32,57 @@ export default function TodoApp() {
   //   };
 
   return (
-  <TodoDiv>
-    <LogoDiv>
+  <TodoStyle.TodoDiv>
+    <TodoStyle.LogoDiv>
         Todo
-    </LogoDiv>
-    <HeaderDiv>    
-    </HeaderDiv>
-    <ListDiv>
-    </ListDiv>
-    <ContentDiv>
-    </ContentDiv>
-    <LogOutDiv>
-    </LogOutDiv>
-    <LogDiv>
-    </LogDiv>
-  </TodoDiv>
+    </TodoStyle.LogoDiv>
+    <TodoStyle.HeaderDiv>
+        <div>title</div>    
+    </TodoStyle.HeaderDiv>
+    <TodoStyle.ListDiv>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+    </TodoStyle.ListDiv>
+    <TodoStyle.ContentDiv>
+        <div>Content</div>
+    </TodoStyle.ContentDiv>
+    <TodoStyle.LogOutDiv>
+        <div>LogOut</div>
+    </TodoStyle.LogOutDiv>
+    <TodoStyle.LogDiv>
+        <div>Log</div>
+    </TodoStyle.LogDiv>
+  </TodoStyle.TodoDiv>
   );
 }
