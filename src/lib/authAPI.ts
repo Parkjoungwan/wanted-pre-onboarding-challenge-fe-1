@@ -1,13 +1,14 @@
-import { customAxiosAuth } from './customAxiosAuth';
+import { customAxiosAuth } from "./customAxiosAuth";
 
 export const authApi = {
-    postLogin: (email:string, password:string) => customAxiosAuth().post('/users/login', {
+  postLogin: (email: string, password: string) =>
+    customAxiosAuth().post("/users/login", {
         email: email,
-        password: password
+        password: password,
     }),
-    postJoin: (email:string, password:string) => customAxiosAuth().post('/users/join', {
+  postJoin: (email: string, password: string) =>
+    customAxiosAuth().post("/users/create", {
         email: email,
-        password: password
+        password: password,
     }),
-
-}
+};

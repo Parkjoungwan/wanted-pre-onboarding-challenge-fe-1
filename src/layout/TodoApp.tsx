@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { authApi } from "../lib/authAPI";
 import * as HomeStyled from "../styles/HomeStyle";
 import StateModal from "../components/modals/StateModal";
@@ -23,7 +22,7 @@ interface stateType {
   msg: string;
 }
 
-export default function Home() {
+export default function TodoApp() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [val, setVal] = useState<boolean>(true);
@@ -32,7 +31,6 @@ export default function Home() {
     stateImg: "",
     msg: "",
   });
-  const navi = useNavigate();
   const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
@@ -42,8 +40,7 @@ export default function Home() {
   const onClickLogin = async () => {
     try {
       const respone = await authApi.postLogin(email, password);
-      window.localStorage.setItem('token', respone.data.token);
-      navi('/TodoApp');
+      console.log(respone);
     } catch (e: any) {
       setModalOpen(true);
       setStateData({ stateImg: "Error", msg: e.response.data.message });
@@ -74,7 +71,7 @@ export default function Home() {
       </HomeStyled.LogoDiv>
       <HomeStyled.InputDiv>
         <HomeStyled.IdDiv>
-          ID:
+          ID2:
           <input type="email" value={email} onChange={onChangeEmail} />
         </HomeStyled.IdDiv>
         <HomeStyled.PwDiv>
