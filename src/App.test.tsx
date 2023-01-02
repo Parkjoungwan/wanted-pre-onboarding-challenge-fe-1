@@ -1,5 +1,4 @@
 import Auth from "./classes/AuthTest";
-import { authApi } from "./lib/authAPI";
 
 describe("make Auth Properly", () => {
   it("check Password & ID is Properly", () => {

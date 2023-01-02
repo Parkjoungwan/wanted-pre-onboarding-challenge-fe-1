@@ -30,11 +30,11 @@ const ModalBaseDiv = styled.div`
 
 const ModalBaseHeader = styled.header<{ isType?: string | React.Dispatch<React.SetStateAction<string>> }>`
     ${(props) => props.isType === "Success" ? css`
-    background-color:  #c8e6c9
+    background-color:  #fbdea2
     ` : (props.isType === "Error" ? css`
     background-color:  #fbdea2
     ` : css`
-    background-color:  #90A4AE
+    background-color:  #fbdea2
     `)};
     text-align: center;
     
@@ -50,7 +50,7 @@ const ModalBaseMain = styled.main<{ isType?: string | React.Dispatch<React.SetSt
     ` : (props.isType === "Error" ? css`
     background-color:  #fbdea2
     ` : css`
-    background-color:  #90A4AE
+    background-color:  #fbdea2
     `)};
 `;
 

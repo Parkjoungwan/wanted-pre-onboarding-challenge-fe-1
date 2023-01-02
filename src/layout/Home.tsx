@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "../lib/authAPI";
 import * as HomeStyled from "../styles/HomeStyle";
@@ -32,6 +32,7 @@ export default function Home() {
     stateImg: "",
     msg: "",
   });
+
   const navi = useNavigate();
   const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -42,8 +43,8 @@ export default function Home() {
   const onClickLogin = async () => {
     try {
       const respone = await authApi.postLogin(email, password);
-      window.localStorage.setItem('token', respone.data.token);
-      navi('/TodoApp');
+      window.localStorage.setItem("token", respone.data.token);
+      navi("/Todo");
     } catch (e: any) {
       setModalOpen(true);
       setStateData({ stateImg: "Error", msg: e.response.data.message });
@@ -52,21 +53,26 @@ export default function Home() {
   const onClickJoin = async () => {
     try {
       const respone = await authApi.postJoin(email, password);
-      console.log(respone);
+      setModalOpen(true);
+      setStateData({ stateImg: "Success", msg: respone.data.message });
     } catch (e: any) {
       setModalOpen(true);
       setStateData({ stateImg: "Error", msg: e.response.data.message });
     }
   };
+  const tokenCheck = useCallback(() => {
+    const token = window.localStorage.getItem("token");
+    if (token) navi("/Todo");
+  }, [navi]);
+
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    if (token) {
-    }
-  }, []);
+    tokenCheck();
+  }, [tokenCheck]);
   useEffect(() => {
     if (validate(email, password) === 0) setVal(false);
     else setVal(true);
   }, [email, password]);
+
   return (
     <HomeStyled.HomeDiv>
       <HomeStyled.LogoDiv>
