@@ -7,7 +7,7 @@ export default function Approuter() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Todo" element={<TodoApp />} />
+        <Route path="/Todo/:no" element={<TodoApp />} />
       </Routes>
     </BrowserRouter>
   );

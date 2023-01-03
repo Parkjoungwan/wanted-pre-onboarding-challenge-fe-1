@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 export const customAxiosTodo = () => {
-    const token = sessionStorage.getItem('token');
+    const token = window.localStorage.getItem('token');
     const baseAxios: AxiosInstance = axios.create({
         baseURL: "",
         headers: {

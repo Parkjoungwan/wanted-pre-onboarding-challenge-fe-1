@@ -44,7 +44,7 @@ export default function Home() {
     try {
       const respone = await authApi.postLogin(email, password);
       window.localStorage.setItem("token", respone.data.token);
-      navi("/Todo");
+      navi("/Todo/0");
     } catch (e: any) {
       setModalOpen(true);
       setStateData({ stateImg: "Error", msg: e.response.data.message });
