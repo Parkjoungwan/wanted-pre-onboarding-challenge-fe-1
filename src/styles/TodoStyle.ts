@@ -61,7 +61,7 @@ export const ListDiv = styled.div`
     display: none;
   }
 `;
-export const CreateButton = styled.button`
+export const Button = styled.button`
   grid-row: 2;
   grid-column: 1;
   font-family: NanumMyeongjo;

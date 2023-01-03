@@ -10,6 +10,7 @@ import {
   TodoInfoContext,
 } from "../lib/context";
 import TodoDetail from "../components/Todo/TodoDetail";
+import { ButtonDiv } from "../styles/HomeStyle";
 
 interface stateType {
   stateImg: string;
@@ -61,6 +62,11 @@ export default function TodoApp() {
     tokenCheck();
   }, [tokenCheck]);
 
+  //LogOut
+  const LogOut = () => {
+    window.localStorage.removeItem("token");
+    navi("/");
+  }
   return (
     <TodoInfoContext.Provider value={TodoInfo}>
       <StateModalControllerContext.Provider value={stateModalController}>
@@ -69,7 +75,7 @@ export default function TodoApp() {
           <TodoList />
           <TodoDetail />
           <TodoStyle.LogOutDiv>
-            <div>LogOut</div>
+            <TodoStyle.Button onClick={LogOut}>LogOut</TodoStyle.Button>
           </TodoStyle.LogOutDiv>
           {stateModal ? (
             <StateModal

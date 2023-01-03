@@ -71,7 +71,7 @@ export default function TodoList() {
             )
           )
         : null}
-      <TodoStyle.CreateButton onClick={createTodo}>+</TodoStyle.CreateButton>
+      <TodoStyle.Button onClick={createTodo}>+</TodoStyle.Button>
     </TodoStyle.ListDiv>
   );
 }
