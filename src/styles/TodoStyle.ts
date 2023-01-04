@@ -27,16 +27,45 @@ export const HeaderDiv = styled.div`
   display: grid;
   grid-template-columns: 12fr 7fr;
 `;
+export const TitleDiv = styled.div`
+  grid-column: 1;
+  text-align: center;
+  font-family: NanumMyeongjo;
+  font-size: 30px;
+  font-weight: bold;
+`;
+export const UpdateAndDeleteDiv = styled.div`
+  grid-column: 2;
+`;
 export const ContentDiv = styled.div`
   grid-row: 2;
   align-content: center;
   justify-content: center;
+  font-family: NanumMyeongjo;
+  font-size: 30px;
+  font-weight: bold;
+
+  word-wrap: break-word;
+  word-break: break-all;
+
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  max-height: 100%;
+  max-width: 100%;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 export const LogDiv = styled.div`
   grid-row: 3;
   text-align: center;
   align-content: center;
   justify-content: center;
+  font-family: NanumMyeongjo;
+  font-size: 20px;
+  font-weight: bold;
 `;
 export const ListDiv = styled.div`
   grid-row: 2;

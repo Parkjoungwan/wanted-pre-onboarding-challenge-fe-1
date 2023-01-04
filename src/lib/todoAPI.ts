@@ -7,9 +7,9 @@ export const todoApi = {
         title: title,
         content: content
     }),
-    updateTodo: (id:string, title:string, content:string) => customAxiosTodo().put('/todos/' + {id}, {
+    updateTodo: (id:string, title:string, content:string) => customAxiosTodo().put('/todos/' + id, {
         title: title,
         content: content
     }),
-    deleteTodo: ()=> customAxiosTodo().delete('/todos/id')
+    deleteTodo: (id:string)=> customAxiosTodo().delete('/todos/' + id)
 }
