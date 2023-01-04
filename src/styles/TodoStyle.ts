@@ -17,6 +17,7 @@ export const LogoDiv = styled.div`
   margin-top: 10px;
 `;
 export const DetailDiv = styled.div`
+  border-left: 1px solid black;
   grid-row: 1 / 4;
   grid-column: 2;
   display: grid;
@@ -25,7 +26,9 @@ export const DetailDiv = styled.div`
 export const HeaderDiv = styled.div`
   grid-row: 1;
   display: grid;
+  align-items: center;
   grid-template-columns: 12fr 7fr;
+  border-bottom: 1px solid black;
 `;
 export const TitleDiv = styled.div`
   grid-column: 1;
@@ -34,16 +37,29 @@ export const TitleDiv = styled.div`
   font-size: 30px;
   font-weight: bold;
 `;
-export const UpdateAndDeleteDiv = styled.div`
-  grid-column: 2;
-`;
-export const ContentDiv = styled.div`
-  grid-row: 2;
-  align-content: center;
-  justify-content: center;
+export const TitleInput = styled.input`
+  text-align: center;
+  max-height: 100%;
+  max-width: 100%;
+  background-color: #fbdea2;
   font-family: NanumMyeongjo;
   font-size: 30px;
   font-weight: bold;
+  border: 0 solid black;
+  &:disabled {
+    color: black;
+  }
+`;
+export const UpdateAndDeleteDiv = styled.div`
+  grid-column: 2;
+  display: flex;
+  justify-content: center;
+`;
+export const ContentDiv = styled.div`
+  grid-row: 2;
+  margin: 3px;
+  align-content: center;
+  justify-content: center;
 
   word-wrap: break-word;
   word-break: break-all;
@@ -58,16 +74,29 @@ export const ContentDiv = styled.div`
     display: none;
   }
 `;
+export const ContentInput = styled.input`
+  max-height: 100%;
+  max-width: 100%;
+  background-color: #fbdea2;
+  font-family: NanumMyeongjo;
+  font-size: 30px;
+  font-weight: bold;
+  border: 0 solid black;
+  &:disabled {
+    color: black;
+  }
+`;
 export const LogDiv = styled.div`
+  border-top: 1px solid black;
   grid-row: 3;
   text-align: center;
-  align-content: center;
-  justify-content: center;
   font-family: NanumMyeongjo;
   font-size: 20px;
   font-weight: bold;
 `;
 export const ListDiv = styled.div`
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
   grid-row: 2;
   grid-column: 1;
   display: flex;
@@ -98,6 +127,7 @@ export const Button = styled.button`
   font-weight: bold;
 `;
 export const LogOutDiv = styled.div`
+  display: grid;
   grid-row: 3;
   grid-column: 1;
   align-content: center;

@@ -5,12 +5,12 @@ import {
   TodoInfoContext,
   TodoListContext,
 } from "../../lib/context";
-import { ButtonDiv } from "../../styles/HomeStyle";
 import { todoApi } from "../../lib/todoAPI";
 import { useNavigate } from "react-router-dom";
 
 export default function TodoDetail() {
-  //set Context
+  //set Context & navi
+  const navi = useNavigate();
   const TodoInfo = useContext(TodoInfoContext);
   const todoList = useContext(TodoListContext);
   const stateModal = useContext(StateModalControllerContext);
@@ -31,8 +31,7 @@ export default function TodoDetail() {
   useEffect(() => {
     callDetail();
   }, [callDetail]);
-  //update DatailInfo
-  const navi = useNavigate();
+  //find ID & Index
   const findID = () => {
     if (todoList?.todoList)
       for (let i = 0; i < todoList.todoList.length; i++) {
@@ -42,8 +41,6 @@ export default function TodoDetail() {
       }
     return null;
   };
-  const Update = () => {};
-  //delete DetailInfo
   const findIndex = () => {
     if (todoList?.todoList)
       for (let i = 0; i < todoList.todoList.length; i++) {
@@ -52,7 +49,13 @@ export default function TodoDetail() {
         }
       }
     return null;
-  }
+  };
+  //update DatailInfo
+  const [update, setUpdate] = useState<boolean>(false);
+  const SwitchUpdate = () => {
+    setUpdate(!update);
+  };
+  //delete DetailInfo
   const Delete = async () => {
     try {
       const id = findID();
@@ -61,14 +64,14 @@ export default function TodoDetail() {
         stateModal?.setOpen(true);
         stateModal?.setStateType({
           stateImg: "Success",
-          msg: "Todo List Deleted."
+          msg: "Todo List Deleted.",
         });
       }
       const index = findIndex();
       if (index) {
         todoList?.todoList.splice(index, 1);
       }
-      navi('/Todo/' + (TodoInfo?.num ? TodoInfo.num - 1 : 0))
+      navi("/Todo/" + (TodoInfo?.num ? TodoInfo.num - 1 : 0));
     } catch (e: any) {
       stateModal?.setOpen(true);
       stateModal?.setStateType({
@@ -80,14 +83,24 @@ export default function TodoDetail() {
   return (
     <TodoStyle.DetailDiv>
       <TodoStyle.HeaderDiv>
-        <TodoStyle.TitleDiv>{title}</TodoStyle.TitleDiv>
+        <TodoStyle.TitleDiv>
+          <TodoStyle.TitleInput value={title} disabled={!update}/>
+        </TodoStyle.TitleDiv>
         <TodoStyle.UpdateAndDeleteDiv>
-          <TodoStyle.Button onClick={Update}>Update</TodoStyle.Button>
-          <TodoStyle.Button onClick={Delete}>Delete</TodoStyle.Button>
+          {
+            update ?
+              <TodoStyle.Button onClick={SwitchUpdate}>Confirm</TodoStyle.Button>
+              : <TodoStyle.Button onClick={SwitchUpdate}>Update</TodoStyle.Button>
+          }
+          {
+            update ?
+            <TodoStyle.Button onClick={SwitchUpdate}>Cancle</TodoStyle.Button>
+            : <TodoStyle.Button onClick={Delete}>Delete</TodoStyle.Button>
+          }
         </TodoStyle.UpdateAndDeleteDiv>
       </TodoStyle.HeaderDiv>
       <TodoStyle.ContentDiv>
-        <div>{content}</div>
+        <TodoStyle.ContentInput value={content} disabled={!update} />
       </TodoStyle.ContentDiv>
       <TodoStyle.LogDiv>
         <div>{log}</div>
