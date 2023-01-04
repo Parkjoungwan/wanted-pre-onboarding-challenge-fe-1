@@ -1,8 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "../lib/authAPI";
 import * as HomeStyled from "../styles/HomeStyle";
 import StateModal from "../components/modals/StateModal";
+import { TokenContext } from "../lib/context";
 
 const validate = (email: string, password: string): number => {
   let result: number = 0;
@@ -24,6 +25,7 @@ interface stateType {
 }
 
 export default function Home() {
+  const tokenContext = useContext(TokenContext);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [val, setVal] = useState<boolean>(true);
@@ -43,8 +45,9 @@ export default function Home() {
   const onClickLogin = async () => {
     try {
       const respone = await authApi.postLogin(email, password);
+      tokenContext?.setToken(respone.data.token);
       window.localStorage.setItem("token", respone.data.token);
-      navi("/Todo/0");
+      navi("/");
     } catch (e: any) {
       setModalOpen(true);
       setStateData({ stateImg: "Error", msg: e.response.data.message });
@@ -62,8 +65,14 @@ export default function Home() {
   };
   const tokenCheck = useCallback(() => {
     const token = window.localStorage.getItem("token");
-    if (token) navi("/Todo");
-  }, [navi]);
+    if (token)
+      if (token === tokenContext?.token) navi("/");
+      else {
+        setModalOpen(true);
+        setStateData({ stateImg: "Error", msg: "Wrong Token." });
+        window.localStorage.removeItem("token");
+      }
+  }, [navi, tokenContext]);
 
   useEffect(() => {
     tokenCheck();

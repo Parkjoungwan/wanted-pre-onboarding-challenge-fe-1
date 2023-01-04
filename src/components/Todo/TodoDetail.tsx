@@ -4,6 +4,7 @@ import {
   StateModalControllerContext,
   TodoInfoContext,
   TodoListContext,
+  TokenContext,
 } from "../../lib/context";
 import { todoApi } from "../../lib/todoAPI";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +15,7 @@ export default function TodoDetail() {
   const TodoInfo = useContext(TodoInfoContext);
   const todoList = useContext(TodoListContext);
   const stateModal = useContext(StateModalControllerContext);
+  const tokenContext = useContext(TokenContext);
   //set DetailInfo
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -31,7 +33,7 @@ export default function TodoDetail() {
   useEffect(() => {
     callDetail();
   }, [callDetail]);
-  //find ID & Index
+  //find ID & Index & tokenCheck
   const findID = () => {
     if (todoList?.todoList)
       for (let i = 0; i < todoList.todoList.length; i++) {
@@ -50,6 +52,10 @@ export default function TodoDetail() {
       }
     return null;
   };
+  const tokenCheck = () => {
+    const token = window.localStorage.getItem("token");
+    if (token !== tokenContext?.token) navi("/auth");
+  };
   //update DatailInfo
   const [update, setUpdate] = useState<boolean>(false);
   const SwitchUpdate = () => {
@@ -60,6 +66,7 @@ export default function TodoDetail() {
     setUpdate(!update);
   };
   const Update = async () => {
+    tokenCheck();
     try {
       const id = findID();
       if (id) {
@@ -97,6 +104,7 @@ export default function TodoDetail() {
   };
   //delete DetailInfo
   const Delete = async () => {
+    tokenCheck();
     try {
       const id = findID();
       if (id) {
@@ -111,7 +119,7 @@ export default function TodoDetail() {
       if (index) {
         todoList?.todoList.splice(index, 1);
       }
-      navi("/Todo/" + (TodoInfo?.num ? TodoInfo.num - 1 : 0));
+      navi("/" + (TodoInfo?.num ? TodoInfo.num - 1 : 0));
     } catch (e: any) {
       stateModal?.setOpen(true);
       stateModal?.setStateType({

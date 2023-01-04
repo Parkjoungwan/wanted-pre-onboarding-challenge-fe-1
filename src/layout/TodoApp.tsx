@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import StateModal from "../components/modals/StateModal";
 import * as TodoStyle from "../styles/TodoStyle";
@@ -10,6 +10,7 @@ import {
   TodoInfoContext,
   TodoListContext,
   TodoListInterface,
+  TokenContext,
 } from "../lib/context";
 import TodoDetail from "../components/Todo/TodoDetail";
 
@@ -19,15 +20,6 @@ interface stateType {
 }
 
 export default function TodoApp() {
-  //set TokenCheck
-  const navi = useNavigate();
-  const token = window.localStorage.getItem("token");
-  const tokenCheck = useCallback(() => {
-    if (!token) navi("/");
-  }, [token, navi]);
-  useEffect(() => {
-    tokenCheck();
-  }, [tokenCheck]);
   //set stateModal
   const [stateModal, setStateModal] = useState<boolean>(false);
   const [stateData, setStateData] = useState<stateType>({
@@ -41,15 +33,32 @@ export default function TodoApp() {
     setStateType: setStateData,
   };
 
+  //set TokenCheck
+  const navi = useNavigate();
+  const tokenContext = useContext(TokenContext);
+  const token = window.localStorage.getItem("token");
+  const tokenCheck = useCallback(() => {
+    if (token !== tokenContext?.token) navi("/auth");
+  }, [token, navi, tokenContext]);
+  useEffect(() => {
+    tokenCheck();
+  }, [tokenCheck]);
+
   //set Todo Infomation
   const { no } = useParams();
   useEffect(() => {
-    setTodoInfo({
-      num: Number(no),
-      setNum: setSelectedNum,
-    });
+    if (no)
+      setTodoInfo({
+        num: Number(no),
+        setNum: setSelectedNum,
+      });
+    else
+      setTodoInfo({
+        num: 0,
+        setNum: setSelectedNum,
+      });
   }, [no]);
-  const [selectedNum, setSelectedNum] = useState<number>(Number(no));
+  const [selectedNum, setSelectedNum] = useState<number>(no ? Number(no) : 0);
   const [TodoInfo, setTodoInfo] = useState<TodoInfo>({
     num: selectedNum,
     setNum: setSelectedNum,
