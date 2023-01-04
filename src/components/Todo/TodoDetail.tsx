@@ -55,6 +55,46 @@ export default function TodoDetail() {
   const SwitchUpdate = () => {
     setUpdate(!update);
   };
+  const Cancle = () => {
+    callDetail();
+    setUpdate(!update);
+  };
+  const Update = async () => {
+    try {
+      const id = findID();
+      if (id) {
+        await todoApi.updateTodo(id, title, content);
+        stateModal?.setOpen(true);
+        stateModal?.setStateType({
+          stateImg: "Success",
+          msg: "Todo List Updated.",
+        });
+      }
+      const index = findIndex();
+      console.log(index);
+      if (index !== null) {
+        if (todoList?.todoList) {
+          let tmp = todoList.todoList;
+          tmp[index].title = title;
+          tmp[index].content = content;
+          todoList.setTodoList(tmp);
+        }
+      }
+      setUpdate(!update);
+    } catch (e: any) {
+      stateModal?.setOpen(true);
+      stateModal?.setStateType({
+        stateImg: "Error",
+        msg: e,
+      });
+    }
+  };
+  const titleUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
+  const contentUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setContent(event.target.value);
+  };
   //delete DetailInfo
   const Delete = async () => {
     try {
@@ -84,23 +124,31 @@ export default function TodoDetail() {
     <TodoStyle.DetailDiv>
       <TodoStyle.HeaderDiv>
         <TodoStyle.TitleDiv>
-          <TodoStyle.TitleInput value={title} disabled={!update}/>
+          <TodoStyle.TitleInput
+            onChange={titleUpdate}
+            value={title}
+            disabled={!update}
+          />
         </TodoStyle.TitleDiv>
         <TodoStyle.UpdateAndDeleteDiv>
-          {
-            update ?
-              <TodoStyle.Button onClick={SwitchUpdate}>Confirm</TodoStyle.Button>
-              : <TodoStyle.Button onClick={SwitchUpdate}>Update</TodoStyle.Button>
-          }
-          {
-            update ?
-            <TodoStyle.Button onClick={SwitchUpdate}>Cancle</TodoStyle.Button>
-            : <TodoStyle.Button onClick={Delete}>Delete</TodoStyle.Button>
-          }
+          {update ? (
+            <TodoStyle.Button onClick={Update}>Confirm</TodoStyle.Button>
+          ) : (
+            <TodoStyle.Button onClick={SwitchUpdate}>Update</TodoStyle.Button>
+          )}
+          {update ? (
+            <TodoStyle.Button onClick={Cancle}>Cancle</TodoStyle.Button>
+          ) : (
+            <TodoStyle.Button onClick={Delete}>Delete</TodoStyle.Button>
+          )}
         </TodoStyle.UpdateAndDeleteDiv>
       </TodoStyle.HeaderDiv>
       <TodoStyle.ContentDiv>
-        <TodoStyle.ContentInput value={content} disabled={!update} />
+        <TodoStyle.ContentInput
+          onChange={contentUpdate}
+          value={content}
+          disabled={!update}
+        />
       </TodoStyle.ContentDiv>
       <TodoStyle.LogDiv>
         <div>{log}</div>
