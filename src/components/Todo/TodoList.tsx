@@ -5,7 +5,6 @@ import {
   StateModalControllerContext,
   TodoInfoContext,
   TodoListContext,
-  TokenContext,
 } from "../../lib/context";
 import { useNavigate } from "react-router-dom";
 
@@ -14,10 +13,9 @@ export default function TodoList() {
   const stateModal = useContext(StateModalControllerContext);
   const TodoInfo = useContext(TodoInfoContext);
   const todoList = useContext(TodoListContext);
-  const tokenContext = useContext(TokenContext);
   const tokenCheck = () => {
     const token = window.localStorage.getItem("token");
-    if (token !== tokenContext?.token) navi("/auth");
+    if (!token) navi("/auth");
   };
   //set TodoList
   const callList = useCallback(async () => {
@@ -25,7 +23,6 @@ export default function TodoList() {
     try {
       const response = await todoApi.getTodos();
       todoList?.setTodoList(response.data.data);
-      console.log("listCreated");
     } catch (e: any) {
       stateModal?.setOpen(true);
       stateModal?.setStateType({

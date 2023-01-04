@@ -10,7 +10,6 @@ import {
   TodoInfoContext,
   TodoListContext,
   TodoListInterface,
-  TokenContext,
 } from "../lib/context";
 import TodoDetail from "../components/Todo/TodoDetail";
 
@@ -35,11 +34,10 @@ export default function TodoApp() {
 
   //set TokenCheck
   const navi = useNavigate();
-  const tokenContext = useContext(TokenContext);
   const token = window.localStorage.getItem("token");
   const tokenCheck = useCallback(() => {
-    if (token !== tokenContext?.token) navi("/auth");
-  }, [token, navi, tokenContext]);
+    if (!token) navi("/auth");
+  }, [token, navi]);
   useEffect(() => {
     tokenCheck();
   }, [tokenCheck]);

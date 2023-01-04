@@ -76,7 +76,9 @@ export const ContentDiv = styled.div`
 `;
 export const ContentInput = styled.input`
   max-height: 100%;
-  max-width: 100%;
+  width: 100%;
+  word-wrap: break-word;
+  word-break: break-all;
   background-color: #fbdea2;
   font-family: NanumMyeongjo;
   font-size: 30px;

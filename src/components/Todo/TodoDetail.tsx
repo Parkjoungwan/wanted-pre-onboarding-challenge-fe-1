@@ -4,7 +4,6 @@ import {
   StateModalControllerContext,
   TodoInfoContext,
   TodoListContext,
-  TokenContext,
 } from "../../lib/context";
 import { todoApi } from "../../lib/todoAPI";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +14,6 @@ export default function TodoDetail() {
   const TodoInfo = useContext(TodoInfoContext);
   const todoList = useContext(TodoListContext);
   const stateModal = useContext(StateModalControllerContext);
-  const tokenContext = useContext(TokenContext);
   //set DetailInfo
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -54,8 +52,8 @@ export default function TodoDetail() {
   };
   const tokenCheck = () => {
     const token = window.localStorage.getItem("token");
-    if (token !== tokenContext?.token) navi("/auth");
-  };
+    if (!token) navi("/auth");
+  }
   //update DatailInfo
   const [update, setUpdate] = useState<boolean>(false);
   const SwitchUpdate = () => {
@@ -104,7 +102,7 @@ export default function TodoDetail() {
   };
   //delete DetailInfo
   const Delete = async () => {
-    tokenCheck();
+      tokenCheck();
     try {
       const id = findID();
       if (id) {
@@ -133,6 +131,7 @@ export default function TodoDetail() {
       <TodoStyle.HeaderDiv>
         <TodoStyle.TitleDiv>
           <TodoStyle.TitleInput
+            type="textarea"               
             onChange={titleUpdate}
             value={title}
             disabled={!update}
@@ -153,6 +152,7 @@ export default function TodoDetail() {
       </TodoStyle.HeaderDiv>
       <TodoStyle.ContentDiv>
         <TodoStyle.ContentInput
+          type="textarea"
           onChange={contentUpdate}
           value={content}
           disabled={!update}
