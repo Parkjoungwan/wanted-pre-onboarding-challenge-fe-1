@@ -8,8 +8,6 @@ interface stateType {
 export interface TodoInfo {
   num: number;
   setNum: React.Dispatch<React.SetStateAction<number>>;
-  id: string;
-  setId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface StateModalController {
@@ -19,6 +17,12 @@ export interface StateModalController {
   setStateType: React.Dispatch<React.SetStateAction<stateType>>;
 }
 
+export interface TodoListInterface {
+  todoList: any[];
+  setTodoList: React.Dispatch<React.SetStateAction<any[]>>;
+}
+
 export const StateModalControllerContext =
   createContext<StateModalController | null>(null);
 export const TodoInfoContext = createContext<TodoInfo | null>(null);
+export const TodoListContext = createContext<TodoListInterface | null>(null);

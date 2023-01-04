@@ -1,33 +1,35 @@
-import { useEffect, useState, useCallback, useContext } from "react";
+import { useEffect, useCallback, useContext } from "react";
 import { todoApi } from "../../lib/todoAPI";
 import * as TodoStyle from "../../styles/TodoStyle";
 import {
   StateModalControllerContext,
   TodoInfoContext,
+  TodoListContext,
 } from "../../lib/context";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function TodoList() {
   //set Context
   const stateModal = useContext(StateModalControllerContext);
   const TodoInfo = useContext(TodoInfoContext);
+  const todoList = useContext(TodoListContext);
   //set TodoList
-  const [listBodyAll, setListBodyAll] = useState<any[]>([]);
   const callList = useCallback(async () => {
-    const response = await todoApi.getTodos();
-    setListBodyAll(response.data.data);
-  }, []);
-  const findId = useCallback(() => {
-    for (let i = 0; i < listBodyAll.length; i++) {
-      if (i === TodoInfo?.num) TodoInfo.setId(listBodyAll[i].id);
+    try {
+      const response = await todoApi.getTodos();
+      todoList?.setTodoList(response.data.data);
+      console.log("listCreated");
+    } catch (e: any) {
+      stateModal?.setOpen(true);
+      stateModal?.setStateType({
+        stateImg: "Error",
+        msg: e,
+      });
     }
-  }, [listBodyAll, TodoInfo]);
+  }, []);
   useEffect(() => {
     callList();
   }, [callList]);
-  useEffect(() => {
-    findId();
-  }, [findId]);
   //create TodoList
   const createTodo = async () => {
     try {
@@ -58,8 +60,8 @@ export default function TodoList() {
 
   return (
     <TodoStyle.ListDiv>
-      {listBodyAll[0]
-        ? listBodyAll.map((item, index) =>
+      {todoList?.todoList
+        ? todoList.todoList.map((item, index) =>
             index === TodoInfo?.num ? (
               <button key={item.id} id={index + ""} onClick={onClick}>
                 *{item.title}

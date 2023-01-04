@@ -8,9 +8,10 @@ import {
   StateModalController,
   TodoInfo,
   TodoInfoContext,
+  TodoListContext,
+  TodoListInterface,
 } from "../lib/context";
 import TodoDetail from "../components/Todo/TodoDetail";
-import { ButtonDiv } from "../styles/HomeStyle";
 
 interface stateType {
   stateImg: string;
@@ -18,28 +19,15 @@ interface stateType {
 }
 
 export default function TodoApp() {
-  //set Todo Infomation
-  const { no } = useParams();
-  const [selectedNum, setSelectedNum] = useState<number>(Number(no));
-  const [selectedId, setSelectedId] = useState<string>("");
-  const [TodoInfo, setTodoInfo] = useState<TodoInfo>({
-    num: selectedNum,
-    setNum: setSelectedNum,
-    id: selectedId,
-    setId: setSelectedId,
-  })
-  const setData = useCallback(() => {
-    setSelectedNum(Number(no));
-    setTodoInfo({
-      num: selectedNum,
-      setNum: setSelectedNum,
-      id: selectedId,
-      setId: setSelectedId,
-    })
-  }, [no]);
-  useEffect(()=> {
-    setData();
-  }, [setData])
+  //set TokenCheck
+  const navi = useNavigate();
+  const token = window.localStorage.getItem("token");
+  const tokenCheck = useCallback(() => {
+    if (!token) navi("/");
+  }, [token, navi]);
+  useEffect(() => {
+    tokenCheck();
+  }, [tokenCheck]);
   //set stateModal
   const [stateModal, setStateModal] = useState<boolean>(false);
   const [stateData, setStateData] = useState<stateType>({
@@ -52,41 +40,52 @@ export default function TodoApp() {
     stateType: stateData,
     setStateType: setStateData,
   };
-  //set TokenCheck
-  const navi = useNavigate();
-  const token = window.localStorage.getItem("token");
-  const tokenCheck = useCallback(() => {
-    if (!token) navi("/");
-  }, [token, navi]);
-  useEffect(() => {
-    tokenCheck();
-  }, [tokenCheck]);
 
+  //set Todo Infomation
+  const { no } = useParams();
+  useEffect(() => {
+    setTodoInfo({
+      num: Number(no),
+      setNum: setSelectedNum,
+    });
+  }, [no]);
+  const [selectedNum, setSelectedNum] = useState<number>(Number(no));
+  const [TodoInfo, setTodoInfo] = useState<TodoInfo>({
+    num: selectedNum,
+    setNum: setSelectedNum,
+  });
+  const [todoList, setTodoList] = useState<any[]>([]);
+  const todoListConext: TodoListInterface = {
+    todoList: todoList,
+    setTodoList: setTodoList,
+  };
   //LogOut
   const LogOut = () => {
     window.localStorage.removeItem("token");
     navi("/");
-  }
+  };
   return (
-    <TodoInfoContext.Provider value={TodoInfo}>
-      <StateModalControllerContext.Provider value={stateModalController}>
-        <TodoStyle.TodoDiv>
-          <TodoStyle.LogoDiv>Todo</TodoStyle.LogoDiv>
-          <TodoList />
-          <TodoDetail />
-          <TodoStyle.LogOutDiv>
-            <TodoStyle.Button onClick={LogOut}>LogOut</TodoStyle.Button>
-          </TodoStyle.LogOutDiv>
-          {stateModal ? (
-            <StateModal
-              modalOpen={stateModal}
-              setModalOpen={setStateModal}
-              stateImg={stateData.stateImg}
-              msg={stateData.msg}
-            />
-          ) : null}
-        </TodoStyle.TodoDiv>
-      </StateModalControllerContext.Provider>
-    </TodoInfoContext.Provider>
+    <TodoListContext.Provider value={todoListConext}>
+      <TodoInfoContext.Provider value={TodoInfo}>
+        <StateModalControllerContext.Provider value={stateModalController}>
+          <TodoStyle.TodoDiv>
+            <TodoStyle.LogoDiv>Todo</TodoStyle.LogoDiv>
+            <TodoList />
+            <TodoDetail />
+            <TodoStyle.LogOutDiv>
+              <TodoStyle.Button onClick={LogOut}>LogOut</TodoStyle.Button>
+            </TodoStyle.LogOutDiv>
+            {stateModal ? (
+              <StateModal
+                modalOpen={stateModal}
+                setModalOpen={setStateModal}
+                stateImg={stateData.stateImg}
+                msg={stateData.msg}
+              />
+            ) : null}
+          </TodoStyle.TodoDiv>
+        </StateModalControllerContext.Provider>
+      </TodoInfoContext.Provider>
+    </TodoListContext.Provider>
   );
 }

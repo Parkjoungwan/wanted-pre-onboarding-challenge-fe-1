@@ -1,38 +1,25 @@
 import { useEffect, useState, useCallback, useContext } from "react";
-import { todoApi } from "../../lib/todoAPI";
 import * as TodoStyle from "../../styles/TodoStyle";
-import {
-  StateModalControllerContext,
-  TodoInfoContext,
-} from "../../lib/context";
+import { TodoInfoContext, TodoListContext } from "../../lib/context";
 
 export default function TodoDetail() {
   //set Context
-  const stateModal = useContext(StateModalControllerContext);
   const TodoInfo = useContext(TodoInfoContext);
+  const todoList = useContext(TodoListContext);
   //set DetailInfo
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [log, setLog] = useState<string>("");
   const callDetail = useCallback(async () => {
-    try {
-      const id: string | undefined = TodoInfo?.id ? TodoInfo.id : undefined;
-      if (id)
-      {
-        const response = await todoApi.getTodoById(id);
-        setTitle(response.data.data.title);
-        setContent(response.data.data.content);
-        setLog(response.data.data.updatedAt);
+    if (todoList?.todoList)
+      for (let i = 0; i < todoList.todoList.length; i++) {
+        if (TodoInfo?.num === i) {
+          setTitle(todoList.todoList[i].title);
+          setContent(todoList.todoList[i].content);
+          setLog(todoList.todoList[i].updatedAt);
+        }
       }
-    } catch (e: any) {
-        console.log(e);
-      stateModal?.setOpen(true);
-      stateModal?.setStateType({
-        stateImg: "Error",
-        msg: e.response.data.message,
-      });
-    }
-  }, [TodoInfo, stateModal]);
+  }, [TodoInfo, todoList]);
   useEffect(() => {
     callDetail();
   }, [callDetail]);
