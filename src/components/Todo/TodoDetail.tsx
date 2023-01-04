@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useContext } from "react";
+import { useEffect, useState, useCallback, useContext, useRef } from "react";
 import * as TodoStyle from "../../styles/TodoStyle";
 import {
   StateModalControllerContext,
@@ -7,6 +7,11 @@ import {
 } from "../../lib/context";
 import { todoApi } from "../../lib/todoAPI";
 import { useNavigate } from "react-router-dom";
+
+interface autoHeight {
+  row: number,
+  lineBreak: {},
+}
 
 export default function TodoDetail() {
   //set Context & navi
@@ -31,6 +36,15 @@ export default function TodoDetail() {
   useEffect(() => {
     callDetail();
   }, [callDetail]);
+  //set autoSize textarea
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  useEffect(() => {
+    if (textareaRef && textareaRef.current) {
+      textareaRef.current.style.height = "0px";
+      const scrollHeight = textareaRef.current.scrollHeight;
+      textareaRef.current.style.height = scrollHeight + "px";
+    }
+  }, [content]);
   //find ID & Index & tokenCheck
   const findID = () => {
     if (todoList?.todoList)
@@ -97,7 +111,7 @@ export default function TodoDetail() {
   const titleUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
-  const contentUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const contentUpdate = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value);
   };
   //delete DetailInfo
@@ -152,7 +166,7 @@ export default function TodoDetail() {
       </TodoStyle.HeaderDiv>
       <TodoStyle.ContentDiv>
         <TodoStyle.ContentInput
-          type="textarea"
+          ref={textareaRef}
           onChange={contentUpdate}
           value={content}
           disabled={!update}

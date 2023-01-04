@@ -74,7 +74,7 @@ export const ContentDiv = styled.div`
     display: none;
   }
 `;
-export const ContentInput = styled.input`
+export const ContentInput = styled.textarea`
   max-height: 100%;
   width: 100%;
   word-wrap: break-word;
