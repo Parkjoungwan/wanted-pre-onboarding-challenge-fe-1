@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../layout/Home";
-import Home2 from "../layout/Home2";
 import TodoApp from "../layout/TodoApp";
 import { TokenContext, tokenInterface } from "../lib/context";
 
