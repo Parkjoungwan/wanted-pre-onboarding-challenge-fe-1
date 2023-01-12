@@ -7,13 +7,17 @@ import {
 } from "../../lib/context/context";
 import { todoApi } from "../../lib/APIs/todoAPI";
 import { useNavigate } from "react-router-dom";
+import { stateHandle } from "../other/utils";
+import { findID, findIndex, tokenExist } from "./todoUtil";
+import PublicModal from "../modals/PublicModal";
 
 export default function TodoDetail() {
   //set Context & navi
   const navi = useNavigate();
-  const TodoInfo = useContext(TodoInfoContext);
+  const todoNumber = useContext(TodoInfoContext);
   const todoList = useContext(TodoListContext);
   const stateModal = useContext(StateModalControllerContext);
+
   //set DetailInfo
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -21,16 +25,17 @@ export default function TodoDetail() {
   const callDetail = useCallback(async () => {
     if (todoList?.todoList)
       for (let i = 0; i < todoList.todoList.length; i++) {
-        if (TodoInfo?.num === i) {
+        if (todoNumber?.num === i) {
           setTitle(todoList.todoList[i].title);
           setContent(todoList.todoList[i].content);
           setLog(todoList.todoList[i].updatedAt);
         }
       }
-  }, [TodoInfo, todoList]);
+  }, [todoNumber, todoList]);
   useEffect(() => {
     callDetail();
   }, [callDetail]);
+
   //set autoSize textarea
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   useEffect(() => {
@@ -40,29 +45,7 @@ export default function TodoDetail() {
       textareaRef.current.style.height = scrollHeight + "px";
     }
   }, [content]);
-  //find ID & Index & tokenCheck
-  const findID = () => {
-    if (todoList?.todoList)
-      for (let i = 0; i < todoList.todoList.length; i++) {
-        if (TodoInfo?.num === i) {
-          return todoList.todoList[i].id;
-        }
-      }
-    return null;
-  };
-  const findIndex = () => {
-    if (todoList?.todoList)
-      for (let i = 0; i < todoList.todoList.length; i++) {
-        if (TodoInfo?.num === i) {
-          return i;
-        }
-      }
-    return null;
-  };
-  const tokenCheck = () => {
-    const token = window.localStorage.getItem("token");
-    if (!token) navi("/auth");
-  }
+
   //update DatailInfo
   const [update, setUpdate] = useState<boolean>(false);
   const SwitchUpdate = () => {
@@ -73,18 +56,14 @@ export default function TodoDetail() {
     setUpdate(!update);
   };
   const Update = async () => {
-    tokenCheck();
+    if (!tokenExist()) navi("/auth");
     try {
-      const id = findID();
+      const id = findID(todoNumber, todoList);
       if (id) {
         await todoApi.updateTodo(id, title, content);
-        stateModal?.setOpen(true);
-        stateModal?.setStateType({
-          stateImg: "Success",
-          msg: "Todo List Updated.",
-        });
+        stateHandle(stateModal, "Success", "Todo List Updated");
       }
-      const index = findIndex();
+      const index = findIndex(todoNumber, todoList);
       console.log(index);
       if (index !== null) {
         if (todoList?.todoList) {
@@ -96,11 +75,7 @@ export default function TodoDetail() {
       }
       setUpdate(!update);
     } catch (e: any) {
-      stateModal?.setOpen(true);
-      stateModal?.setStateType({
-        stateImg: "Error",
-        msg: e,
-      });
+      stateHandle(stateModal, "Error", "Fail to Update");
     }
   };
   const titleUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,38 +84,19 @@ export default function TodoDetail() {
   const contentUpdate = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value);
   };
+
   //delete DetailInfo
-  const Delete = async () => {
-      tokenCheck();
-    try {
-      const id = findID();
-      if (id) {
-        await todoApi.deleteTodo(id);
-        stateModal?.setOpen(true);
-        stateModal?.setStateType({
-          stateImg: "Success",
-          msg: "Todo List Deleted.",
-        });
-      }
-      const index = findIndex();
-      if (index) {
-        todoList?.todoList.splice(index, 1);
-      }
-      navi("/" + (TodoInfo?.num ? TodoInfo.num - 1 : 0));
-    } catch (e: any) {
-      stateModal?.setOpen(true);
-      stateModal?.setStateType({
-        stateImg: "Error",
-        msg: e,
-      });
-    }
+  const [deleteCheck, setDeleteCheck] = useState<boolean>(false);
+  const Delete = () => {
+    setDeleteCheck(true);
   };
+
   return (
     <TodoStyle.DetailDiv>
       <TodoStyle.HeaderDiv>
         <TodoStyle.TitleDiv>
           <TodoStyle.TitleInput
-            type="textarea"               
+            type="textarea"
             onChange={titleUpdate}
             value={title}
             disabled={!update}
@@ -170,6 +126,13 @@ export default function TodoDetail() {
       <TodoStyle.LogDiv>
         <div>{log}</div>
       </TodoStyle.LogDiv>
+      {deleteCheck && (
+        <PublicModal
+          isModal={deleteCheck}
+          setIsModal={setDeleteCheck}
+          isModalNum={1}
+        />
+      )}
     </TodoStyle.DetailDiv>
   );
 }

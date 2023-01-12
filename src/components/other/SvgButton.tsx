@@ -1,5 +1,6 @@
 import { ReactComponent as SuccessSvg } from "../../svgs/success.svg";
 import { ReactComponent as ErrorSvg } from "../../svgs/error.svg";
+import { ReactComponent as XmarkSvg } from "../../svgs/xmark.svg";
 import styled from 'styled-components';
 
 const BaseSvgButton = styled.button.attrs((props) => ({
@@ -31,6 +32,17 @@ const BasaeErrorSvg = styled(ErrorSvg)`
     margin: 25px 5px 5px 5px;
 `;
 
+const BaseXmarkSvg = styled(XmarkSvg) <{ ladders?: string }>`
+    margin: auto;
+    fill: #D32F2F;
+    width: ${(props) => (props.ladders === "que" ? '20px' : '30px')};
+    height: ${(props) => (props.ladders === "que" ? '20px' : '30px')};
+    margin-top: 5px;
+    &:active {
+        fill: #EF5350;
+    }
+`;
+
 interface svgType {
     svgName: string;
     isgames?: string;
@@ -45,6 +57,7 @@ export default function SvgButton(props: svgType) {
         <BaseSvgButton onClick={props.onClick} disabled={props.isDisabled || false}>
             {props.svgName === "SuccessSvg" ? <BasaeSuccessSvg /> : null}
             {props.svgName === "ErrorSvg" ? <BasaeErrorSvg /> : null}
+            {props.svgName === "XmarkSvg" ? <BaseXmarkSvg ladders={props.ladders} /> : null}
         </BaseSvgButton>
     );
 }

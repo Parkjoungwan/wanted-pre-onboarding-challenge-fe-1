@@ -5,7 +5,7 @@ export interface stateType {
   msg: string;
 }
 
-export interface TodoInfo {
+export interface TodoNumber {
   num: number;
   setNum: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -36,7 +36,7 @@ export interface authInput {
 
 export const StateModalControllerContext =
   createContext<StateModalController | null>(null);
-export const TodoInfoContext = createContext<TodoInfo | null>(null);
+export const TodoInfoContext = createContext<TodoNumber | null>(null);
 export const TodoListContext = createContext<TodoListInterface | null>(null);
 export const TokenContext = createContext<tokenInterface | null>(null);
 export const AuthInputContext = createContext<authInput | null>(null);

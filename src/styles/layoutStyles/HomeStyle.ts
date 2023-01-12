@@ -20,7 +20,7 @@ export const ImgDiv = styled.div`
   grid-column: 2;
 `;
 
-export const InputDiv = styled.div`
+export const InputForm = styled.form`
   grid-row: 4;
   display: grid;
   grid-template-columns: 2.5fr 6.5fr 2fr 7fr 2fr;
@@ -31,6 +31,8 @@ export const InputDiv = styled.div`
 
 export const IdDiv = styled.div`
   grid-column: 2;
+`;
+export const Label = styled.label`
 `;
 export const PwDiv = styled.div`
   grid-column: 4;

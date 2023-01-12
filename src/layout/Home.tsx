@@ -52,6 +52,9 @@ export default function Home() {
       stateHandle(stateContext, "Error", e.response.data.message);
     }
   };
+  const preventSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  } 
 
   //tokenCheck
   useEffect(() => {
@@ -65,16 +68,16 @@ export default function Home() {
       <HomeStyled.LogoDiv>
         <HomeStyled.ImgDiv>Todo List</HomeStyled.ImgDiv>
       </HomeStyled.LogoDiv>
-      <HomeStyled.InputDiv>
+      <HomeStyled.InputForm onSubmit={preventSubmit}>
         <HomeStyled.IdDiv>
-          ID:
-          <input type="email" value={email} onChange={onChangeEmail} />
+          <HomeStyled.Label htmlFor="ID">ID:</HomeStyled.Label>
+          <input id="ID" type="email" value={email} onChange={onChangeEmail} />
         </HomeStyled.IdDiv>
         <HomeStyled.PwDiv>
-          PW:
-          <input type="password" value={password} onChange={onChangePassword} />
+          <HomeStyled.Label htmlFor="PW">PW:</HomeStyled.Label>
+          <input id="PW" type="password" value={password} onChange={onChangePassword} />
         </HomeStyled.PwDiv>
-      </HomeStyled.InputDiv>
+      </HomeStyled.InputForm>
       <HomeStyled.ButtonDiv>
         <HomeStyled.ButtonLogin onClick={onClickLogin} disabled={disable}>
           Login

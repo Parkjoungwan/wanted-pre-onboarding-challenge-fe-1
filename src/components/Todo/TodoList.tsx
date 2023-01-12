@@ -7,57 +7,45 @@ import {
   TodoListContext,
 } from "../../lib/context/context";
 import { useNavigate } from "react-router-dom";
+import { stateHandle } from "../other/utils";
+import { tokenExist } from "./todoUtil";
 
 export default function TodoList() {
   //set Context
+  const navi = useNavigate();
   const stateModal = useContext(StateModalControllerContext);
   const TodoInfo = useContext(TodoInfoContext);
   const todoList = useContext(TodoListContext);
-  const tokenCheck = () => {
-    const token = window.localStorage.getItem("token");
-    if (!token) navi("/auth");
-  };
+
   //set TodoList
   const callList = useCallback(async () => {
-    tokenCheck();
+    if (!tokenExist()) navi("/auth");
     try {
       const response = await todoApi.getTodos();
       todoList?.setTodoList(response.data.data);
     } catch (e: any) {
-      stateModal?.setOpen(true);
-      stateModal?.setStateType({
-        stateImg: "Error",
-        msg: e,
-      });
+      stateHandle(stateModal, "Error", "fail to fetch TodoList");
     }
   }, []);
   useEffect(() => {
     callList();
   }, [callList]);
+
   //create TodoList
   const createTodo = async () => {
-    tokenCheck();
+    if (!tokenExist()) navi("/auth");
     try {
       const title = "newTitle";
       const content = "newDetail";
-      const response = await todoApi.createTodo(title, content);
+      await todoApi.createTodo(title, content);
       callList();
-      console.log(response);
-      stateModal?.setOpen(true);
-      stateModal?.setStateType({
-        stateImg: "Success",
-        msg: "Todo Created!",
-      });
+      stateHandle(stateModal, "Success", "Todo Created");
     } catch (e: any) {
-      stateModal?.setOpen(true);
-      stateModal?.setStateType({
-        stateImg: "Error",
-        msg: e.response.data.message,
-      });
+      stateHandle(stateModal, "Error", e.response.data.message);
     }
   };
+
   //Show Other Detail
-  const navi = useNavigate();
   const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target: string = (e.target as HTMLTableElement).id;
     navi("/" + target);

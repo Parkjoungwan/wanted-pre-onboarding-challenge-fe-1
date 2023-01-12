@@ -5,14 +5,14 @@ import * as TodoStyle from "../styles/layoutStyles/TodoStyle";
 import TodoList from "../components/Todo/TodoList";
 import {
   StateModalControllerContext,
-  TodoInfo,
+  TodoNumber,
   TodoInfoContext,
   TodoListContext,
   TodoListInterface,
   TokenContext,
 } from "../lib/context/context";
 import TodoDetail from "../components/Todo/TodoDetail";
-import { tokenCheck } from "../components/other/utils";
+import { tokenExist } from "../components/Todo/todoUtil";
 
 export default function TodoApp() {
   const stateContext = useContext(StateModalControllerContext);
@@ -21,14 +21,20 @@ export default function TodoApp() {
 
   //set TokenCheck
   useEffect(() => {
-    if (!tokenCheck(tokenContext, stateContext)) {
+    if (!tokenExist()) {
       navi("/");
     }
   }, [navi, tokenContext, stateContext]);
 
   //set Todo Infomation
   const { no } = useParams();
+  const [selectedNum, setSelectedNum] = useState<number>(no ? Number(no) : 0);
+  const [TodoInfo, setTodoInfo] = useState<TodoNumber>({
+    num: selectedNum,
+    setNum: setSelectedNum,
+  });
   useEffect(() => {
+    console.log(no);
     if (no)
       setTodoInfo({
         num: Number(no),
@@ -40,11 +46,7 @@ export default function TodoApp() {
         setNum: setSelectedNum,
       });
   }, [no]);
-  const [selectedNum, setSelectedNum] = useState<number>(no ? Number(no) : 0);
-  const [TodoInfo, setTodoInfo] = useState<TodoInfo>({
-    num: selectedNum,
-    setNum: setSelectedNum,
-  });
+
   const [todoList, setTodoList] = useState<any[]>([]);
   const todoListConext: TodoListInterface = {
     todoList: todoList,
@@ -54,7 +56,7 @@ export default function TodoApp() {
   //LogOut
   const LogOut = () => {
     window.localStorage.removeItem("token");
-    navi("/");
+    navi("/auth");
   };
 
   return (
