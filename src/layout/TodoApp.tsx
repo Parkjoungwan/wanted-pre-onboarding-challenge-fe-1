@@ -34,7 +34,6 @@ export default function TodoApp() {
     setNum: setSelectedNum,
   });
   useEffect(() => {
-    console.log(no);
     if (no)
       setTodoInfo({
         num: Number(no),

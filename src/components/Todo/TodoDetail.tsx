@@ -64,7 +64,6 @@ export default function TodoDetail() {
         stateHandle(stateModal, "Success", "Todo List Updated");
       }
       const index = findIndex(todoNumber, todoList);
-      console.log(index);
       if (index !== null) {
         if (todoList?.todoList) {
           let tmp = todoList.todoList;
