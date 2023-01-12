@@ -1,17 +1,12 @@
 import { useEffect, useState, useCallback, useContext, useRef } from "react";
-import * as TodoStyle from "../../styles/TodoStyle";
+import * as TodoStyle from "../../styles/layoutStyles/TodoStyle";
 import {
   StateModalControllerContext,
   TodoInfoContext,
   TodoListContext,
-} from "../../lib/context";
-import { todoApi } from "../../lib/todoAPI";
+} from "../../lib/context/context";
+import { todoApi } from "../../lib/APIs/todoAPI";
 import { useNavigate } from "react-router-dom";
-
-interface autoHeight {
-  row: number,
-  lineBreak: {},
-}
 
 export default function TodoDetail() {
   //set Context & navi

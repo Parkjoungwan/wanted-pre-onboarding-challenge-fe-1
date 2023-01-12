@@ -1,46 +1,30 @@
-import { useEffect, useState, useCallback, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import StateModal from "../components/modals/StateModal";
-import * as TodoStyle from "../styles/TodoStyle";
+import * as TodoStyle from "../styles/layoutStyles/TodoStyle";
 import TodoList from "../components/Todo/TodoList";
 import {
   StateModalControllerContext,
-  StateModalController,
   TodoInfo,
   TodoInfoContext,
   TodoListContext,
   TodoListInterface,
-} from "../lib/context";
+  TokenContext,
+} from "../lib/context/context";
 import TodoDetail from "../components/Todo/TodoDetail";
-
-interface stateType {
-  stateImg: string;
-  msg: string;
-}
+import { tokenCheck } from "../components/other/utils";
 
 export default function TodoApp() {
-  //set stateModal
-  const [stateModal, setStateModal] = useState<boolean>(false);
-  const [stateData, setStateData] = useState<stateType>({
-    stateImg: "",
-    msg: "",
-  });
-  const stateModalController: StateModalController = {
-    isOpen: stateModal,
-    setOpen: setStateModal,
-    stateType: stateData,
-    setStateType: setStateData,
-  };
+  const stateContext = useContext(StateModalControllerContext);
+  const tokenContext = useContext(TokenContext);
+  const navi = useNavigate();
 
   //set TokenCheck
-  const navi = useNavigate();
-  const token = window.localStorage.getItem("token");
-  const tokenCheck = useCallback(() => {
-    if (!token) navi("/auth");
-  }, [token, navi]);
   useEffect(() => {
-    tokenCheck();
-  }, [tokenCheck]);
+    if (!tokenCheck(tokenContext, stateContext)) {
+      navi("/");
+    }
+  }, [navi, tokenContext, stateContext]);
 
   //set Todo Infomation
   const { no } = useParams();
@@ -66,32 +50,32 @@ export default function TodoApp() {
     todoList: todoList,
     setTodoList: setTodoList,
   };
+
   //LogOut
   const LogOut = () => {
     window.localStorage.removeItem("token");
     navi("/");
   };
+
   return (
     <TodoListContext.Provider value={todoListConext}>
       <TodoInfoContext.Provider value={TodoInfo}>
-        <StateModalControllerContext.Provider value={stateModalController}>
-          <TodoStyle.TodoDiv>
-            <TodoStyle.LogoDiv>Todo</TodoStyle.LogoDiv>
-            <TodoList />
-            <TodoDetail />
-            <TodoStyle.LogOutDiv>
-              <TodoStyle.Button onClick={LogOut}>LogOut</TodoStyle.Button>
-            </TodoStyle.LogOutDiv>
-            {stateModal ? (
-              <StateModal
-                modalOpen={stateModal}
-                setModalOpen={setStateModal}
-                stateImg={stateData.stateImg}
-                msg={stateData.msg}
-              />
-            ) : null}
-          </TodoStyle.TodoDiv>
-        </StateModalControllerContext.Provider>
+        <TodoStyle.TodoDiv>
+          <TodoStyle.LogoDiv>Todo</TodoStyle.LogoDiv>
+          <TodoList />
+          <TodoDetail />
+          <TodoStyle.LogOutDiv>
+            <TodoStyle.Button onClick={LogOut}>LogOut</TodoStyle.Button>
+          </TodoStyle.LogOutDiv>
+          {stateContext?.isOpen ? (
+            <StateModal
+              modalOpen={stateContext?.isOpen}
+              setModalOpen={stateContext?.setOpen}
+              stateImg={stateContext?.stateType.stateImg}
+              msg={stateContext?.stateType.msg}
+            />
+          ) : null}
+        </TodoStyle.TodoDiv>
       </TodoInfoContext.Provider>
     </TodoListContext.Provider>
   );

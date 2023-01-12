@@ -1,11 +1,11 @@
 import { useEffect, useCallback, useContext } from "react";
-import { todoApi } from "../../lib/todoAPI";
-import * as TodoStyle from "../../styles/TodoStyle";
+import { todoApi } from "../../lib/APIs/todoAPI";
+import * as TodoStyle from "../../styles/layoutStyles/TodoStyle";
 import {
   StateModalControllerContext,
   TodoInfoContext,
   TodoListContext,
-} from "../../lib/context";
+} from "../../lib/context/context";
 import { useNavigate } from "react-router-dom";
 
 export default function TodoList() {

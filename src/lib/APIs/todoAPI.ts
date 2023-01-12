@@ -1,4 +1,4 @@
-import { customAxiosTodo } from './customAxiosTodo';
+import { customAxiosTodo } from '../customAxiosBase/customAxiosTodo';
 
 export const todoApi = {
     getTodos: () => customAxiosTodo().get('/todos'),

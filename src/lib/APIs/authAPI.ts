@@ -1,4 +1,4 @@
-import { customAxiosAuth } from "./customAxiosAuth";
+import { customAxiosAuth } from "../customAxiosBase/customAxiosAuth";
 
 export const authApi = {
   postLogin: (email: string, password: string) =>

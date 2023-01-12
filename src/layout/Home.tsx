@@ -1,41 +1,33 @@
-import { useEffect, useState, useCallback, useContext } from "react";
+import * as HomeStyled from "../styles/layoutStyles/HomeStyle";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { authApi } from "../lib/authAPI";
-import * as HomeStyled from "../styles/HomeStyle";
+import { authApi } from "../lib/APIs/authAPI";
+import {
+  TokenContext,
+  StateModalControllerContext,
+} from "../lib/context/context";
 import StateModal from "../components/modals/StateModal";
-import { TokenContext } from "../lib/context";
-
-const validate = (email: string, password: string): number => {
-  let result: number = 0;
-  const regex =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-  if (!regex.test(email)) {
-    result = 1;
-  }
-  if (password.length < 8) {
-    if (result === 1) result = 3;
-    else result = 2;
-  }
-  return result;
-};
-
-interface stateType {
-  stateImg: string;
-  msg: string;
-}
+import { stateHandle, tokenCheck } from "../components/other/utils";
+import { authInputValidate } from "../components/Home/validate";
 
 export default function Home() {
   const tokenContext = useContext(TokenContext);
+  const stateContext = useContext(StateModalControllerContext);
+  const navi = useNavigate();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [val, setVal] = useState<boolean>(true);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [stateData, setStateData] = useState<stateType>({
-    stateImg: "",
-    msg: "",
-  });
+  const [disable, setDisable] = useState<boolean>(true);
+  //validate
+  useEffect(() => {
+    if (authInputValidate(email, password)) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+  }, [email, password]);
 
-  const navi = useNavigate();
+  //Action
   const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
@@ -49,38 +41,24 @@ export default function Home() {
       window.localStorage.setItem("token", respone.data.token);
       navi("/");
     } catch (e: any) {
-      setModalOpen(true);
-      setStateData({ stateImg: "Error", msg: e.response.data.message });
+      stateHandle(stateContext, "Error", e.response.data.message);
     }
   };
   const onClickJoin = async () => {
     try {
       const respone = await authApi.postJoin(email, password);
-      setModalOpen(true);
-      setStateData({ stateImg: "Success", msg: respone.data.message });
+      stateHandle(stateContext, "Success", respone.data.message);
     } catch (e: any) {
-      setModalOpen(true);
-      setStateData({ stateImg: "Error", msg: e.response.data.message });
+      stateHandle(stateContext, "Error", e.response.data.message);
     }
   };
-  const tokenCheck = useCallback(() => {
-    const token = window.localStorage.getItem("token");
-    if (token)
-      if (token === tokenContext?.token) navi("/");
-      else {
-        setModalOpen(true);
-        setStateData({ stateImg: "Error", msg: "Wrong Token." });
-        window.localStorage.removeItem("token");
-      }
-  }, [navi, tokenContext]);
 
+  //tokenCheck
   useEffect(() => {
-    tokenCheck();
-  }, [tokenCheck]);
-  useEffect(() => {
-    if (validate(email, password) === 0) setVal(false);
-    else setVal(true);
-  }, [email, password]);
+    if (!tokenCheck(tokenContext, stateContext)) {
+      navi("/");
+    }
+  }, [navi, tokenContext, stateContext]);
 
   return (
     <HomeStyled.HomeDiv>
@@ -98,19 +76,19 @@ export default function Home() {
         </HomeStyled.PwDiv>
       </HomeStyled.InputDiv>
       <HomeStyled.ButtonDiv>
-        <HomeStyled.ButtonLogin onClick={onClickLogin} disabled={val}>
+        <HomeStyled.ButtonLogin onClick={onClickLogin} disabled={disable}>
           Login
         </HomeStyled.ButtonLogin>
-        <HomeStyled.ButtonJoin onClick={onClickJoin} disabled={val}>
+        <HomeStyled.ButtonJoin onClick={onClickJoin} disabled={disable}>
           Join
         </HomeStyled.ButtonJoin>
       </HomeStyled.ButtonDiv>
-      {modalOpen ? (
+      {stateContext?.isOpen ? (
         <StateModal
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-          stateImg={stateData.stateImg}
-          msg={stateData.msg}
+          modalOpen={stateContext?.isOpen}
+          setModalOpen={stateContext?.setOpen}
+          stateImg={stateContext?.stateType.stateImg}
+          msg={stateContext?.stateType.msg}
         />
       ) : null}
     </HomeStyled.HomeDiv>
