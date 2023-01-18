@@ -29,9 +29,9 @@ $ make fclean
 
 # 실행 사진
 
-![ezgif-3-e1bbf5c0b4](https://user-images.githubusercontent.com/48785968/213106069-c6330606-31a9-498e-9330-9d4db73b90f6.gif)
+![ezgif-1-eeab1a8b2c](https://user-images.githubusercontent.com/48785968/213107067-e6decafa-ced6-4598-bf82-2df1b0bbe153.gif)
 
-![ezgif-3-ddad4d37c8](https://user-images.githubusercontent.com/48785968/213106097-fe881461-4bd5-4b1a-9f48-27b56ad4a7d0.gif)
+![ezgif-1-52c17f3518](https://user-images.githubusercontent.com/48785968/213107088-185e63f9-4d94-4d21-8d65-2dc51a0336d8.gif)
 
 # 노션 정리
 
