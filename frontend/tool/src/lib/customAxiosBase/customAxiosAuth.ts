@@ -14,7 +14,7 @@ export const customAxiosAuth = () => {
         if (error.response && error.response.status === 400) {
             errorMsg = {
                 response: {
-                    data: {message: 'Check your input'},
+                    data: {message: 'Worng User Info.'},
                     status: error.response.status,
                     }
             }
@@ -22,7 +22,7 @@ export const customAxiosAuth = () => {
         if (error.response && error.response.status === 409) {
             errorMsg = {
                 response: {
-                    data: {message: 'Already exist this userInfo'},
+                    data: {message: 'This User Info already exist.'},
                     status: error.response.status,
                     }
             }
