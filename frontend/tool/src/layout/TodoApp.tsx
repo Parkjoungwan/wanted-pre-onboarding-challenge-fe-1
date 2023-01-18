@@ -9,14 +9,12 @@ import {
   TodoInfoContext,
   TodoListContext,
   TodoListInterface,
-  TokenContext,
 } from "../lib/context/context";
 import TodoDetail from "../components/Todo/TodoDetail";
 import { tokenExist } from "../components/Todo/todoUtil";
 
 export default function TodoApp() {
   const stateContext = useContext(StateModalControllerContext);
-  const tokenContext = useContext(TokenContext);
   const navi = useNavigate();
 
   //set TokenCheck
@@ -24,7 +22,7 @@ export default function TodoApp() {
     if (!tokenExist()) {
       navi("/");
     }
-  }, [navi, tokenContext, stateContext]);
+  }, [navi, stateContext]);
 
   //set Todo Infomation
   const { no } = useParams();

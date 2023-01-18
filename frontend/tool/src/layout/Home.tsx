@@ -3,7 +3,6 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "../lib/APIs/authAPI";
 import {
-  TokenContext,
   StateModalControllerContext,
 } from "../lib/context/context";
 import StateModal from "../components/modals/StateModal";
@@ -11,7 +10,6 @@ import { stateHandle, tokenCheck } from "../components/other/utils";
 import { authInputValidate } from "../components/Home/validate";
 
 export default function Home() {
-  const tokenContext = useContext(TokenContext);
   const stateContext = useContext(StateModalControllerContext);
   const navi = useNavigate();
 
@@ -37,7 +35,6 @@ export default function Home() {
   const onClickLogin = async () => {
     try {
       const respone = await authApi.postLogin(email, password);
-      tokenContext?.setToken(respone.data.token);
       window.localStorage.setItem("token", respone.data.token);
       navi("/");
     } catch (e: any) {
@@ -58,10 +55,10 @@ export default function Home() {
 
   //tokenCheck
   useEffect(() => {
-    if (!tokenCheck(tokenContext, stateContext)) {
+    if (!tokenCheck(stateContext)) {
       navi("/");
     }
-  }, [navi, tokenContext, stateContext]);
+  }, [navi, stateContext]);
 
   return (
     <HomeStyled.HomeDiv>

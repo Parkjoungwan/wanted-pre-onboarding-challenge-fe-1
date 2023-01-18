@@ -22,11 +22,6 @@ export interface TodoListInterface {
   setTodoList: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-export interface tokenInterface {
-  token: string;
-  setToken: React.Dispatch<React.SetStateAction<string>>;
-}
-
 export interface authInput {
   email: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
@@ -38,5 +33,4 @@ export const StateModalControllerContext =
   createContext<StateModalController | null>(null);
 export const TodoInfoContext = createContext<TodoNumber | null>(null);
 export const TodoListContext = createContext<TodoListInterface | null>(null);
-export const TokenContext = createContext<tokenInterface | null>(null);
 export const AuthInputContext = createContext<authInput | null>(null);

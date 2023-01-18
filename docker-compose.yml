@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  back:
+    image: back
+    build: ./backend
+    container_name: back
+    ports:
+      - 8080:8080
+    volumes:
+      - back:/app
+    networks:
+      - wanted
+    restart: on-failure
+  front:
+    image: front
+    build: ./frontend
+    container_name: front
+    ports:
+      - '3000:3000'
+    volumes:
+      - front:/usr/src/app
+    networks:
+      - wanted
+    restart: on-failure
+    links:
+      - back
+networks:
+  wanted:
+    driver: bridge
+volumes:
+  front:
+  back:
