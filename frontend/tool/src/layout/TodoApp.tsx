@@ -19,7 +19,7 @@ export default function TodoApp() {
 
   //set TokenCheck
   useEffect(() => {
-    if (!tokenExist()) {
+    if (tokenExist()) {
       navi("/");
     }
   }, [navi, stateContext]);

@@ -14,12 +14,18 @@
 ### Docker-Compose를 사용해 빌드하셔야 합니다.
 
 ```jsx
-$make all
+$ make all
 ```
 
 폴더 내, Makefile이 있는 경로에서 위 명령어 실행 후 로컬호스트 3000번 포트로 접속하시면 됩니다.
 
 [http://localhost:3000](http://localhost:3000)
+
+### 실행 후에는 다음 명령어로 종료해주세요.
+
+```jsx
+$ make fclean
+```
 
 # 실행 사진
 
