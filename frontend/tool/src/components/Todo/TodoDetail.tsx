@@ -61,7 +61,7 @@ export default function TodoDetail() {
       const id = findID(todoNumber, todoList);
       if (id) {
         await todoApi.updateTodo(id, title, content);
-        stateHandle(stateModal, "Success", "Todo List Updated");
+        stateHandle(stateModal, "Success", "TodoList가 업데이트 되었습니다.");
       }
       const index = findIndex(todoNumber, todoList);
       if (index !== null) {

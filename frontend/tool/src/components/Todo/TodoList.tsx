@@ -39,7 +39,7 @@ export default function TodoList() {
       const content = "newDetail";
       await todoApi.createTodo(title, content);
       callList();
-      stateHandle(stateModal, "Success", "Todo Created");
+      stateHandle(stateModal, "Success", "TodoList가 생성되었습니다.");
     } catch (e: any) {
       stateHandle(stateModal, "Error", e.response.data.message);
     }

@@ -101,7 +101,7 @@ export default function DeleteModal({ setIsModal }: ChatModelType) {
       const id = findID(todoNumber, todoList);
       if (id) {
         await todoApi.deleteTodo(id);
-        stateHandle(stateModal, "Success", "TodoList Deleted");
+        stateHandle(stateModal, "Success", "해당 항목이 삭제되었습니다.");
       }
       const index = findIndex(todoNumber, todoList);
       if (index) {
@@ -112,7 +112,7 @@ export default function DeleteModal({ setIsModal }: ChatModelType) {
       }
       navi("/" + (todoNumber?.num ? todoNumber.num - 1 : 0));
     } catch (e: any) {
-      stateHandle(stateModal, "Error", "Fail to Delete");
+      stateHandle(stateModal, "Error", "삭제에 실패했습니다.");
     }
   };
 

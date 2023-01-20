@@ -14,7 +14,7 @@ export const customAxiosAuth = () => {
         if (error.response && error.response.status === 400) {
             errorMsg = {
                 response: {
-                    data: {message: 'Worng User Info.'},
+                    data: {message: 'ID 또는 PASSWORD가 잘못되었습니다.'},
                     status: error.response.status,
                     }
             }
@@ -22,7 +22,7 @@ export const customAxiosAuth = () => {
         if (error.response && error.response.status === 409) {
             errorMsg = {
                 response: {
-                    data: {message: 'This User Info already exist.'},
+                    data: {message: '해당 ID는 이미 존재합니다.'},
                     status: error.response.status,
                     }
             }
