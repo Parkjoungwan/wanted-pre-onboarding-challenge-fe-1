@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "../layout/Home";
 import TodoApp from "../layout/TodoApp";
 import {
@@ -7,6 +7,7 @@ import {
   StateModalController,
   StateModalControllerContext,
 } from "../lib/context/context";
+import isToken from "../utils/isToken";
 
 export default function Approuter() {
   const [stateModal, setStateModal] = useState<boolean>(false);
@@ -25,9 +26,9 @@ export default function Approuter() {
     <StateModalControllerContext.Provider value={stateModalController}>
       <BrowserRouter>
         <Routes>
-          <Route path="/auth" element={<Home />} />
-          <Route path="/:no" element={<TodoApp />} />
-          <Route path="/" element={<TodoApp />} />
+          <Route path="/auth" element={!isToken() ? <Home /> : <Navigate to="/" replace />} />
+          <Route path="/:no" element={isToken() ? <TodoApp /> : <Navigate to="/auth" replace />} />
+          <Route path="/" element={isToken() ? <TodoApp /> : <Navigate to="/auth" replace />} />
         </Routes>
       </BrowserRouter>
     </StateModalControllerContext.Provider>

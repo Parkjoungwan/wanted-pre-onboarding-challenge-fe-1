@@ -8,7 +8,7 @@ import {
 } from "../../lib/context/context";
 import { useNavigate } from "react-router-dom";
 import { stateHandle } from "../other/utils";
-import { tokenExist } from "./todoUtil";
+import isToken from "../../utils/isToken";
 
 export default function TodoList() {
   //set Context
@@ -19,7 +19,7 @@ export default function TodoList() {
 
   //set TodoList
   const callList = useCallback(async () => {
-    if (!tokenExist()) navi("/auth");
+    if (!isToken()) navi("/auth");
     try {
       const response = await todoApi.getTodos();
       todoList?.setTodoList(response.data.data);
@@ -33,7 +33,7 @@ export default function TodoList() {
 
   //create TodoList
   const createTodo = async () => {
-    if (!tokenExist()) navi("/auth");
+    if (!isToken()) navi("/auth");
     try {
       const title = "newTitle";
       const content = "newDetail";

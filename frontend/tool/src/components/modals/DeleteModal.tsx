@@ -9,9 +9,10 @@ import {
   TodoListContext,
   StateModalControllerContext,
 } from "../../lib/context/context";
-import { tokenExist, findID, findIndex } from "../Todo/todoUtil";
+import { findID, findIndex } from "../Todo/todoUtil";
 import { useNavigate } from "react-router-dom";
 import { stateHandle } from "../other/utils";
+import isToken from "../../utils/isToken";
 
 const ModalBaseDiv = styled.div`
   width: 300px;
@@ -96,7 +97,7 @@ export default function DeleteModal({ setIsModal }: ChatModelType) {
   const navi = useNavigate();
 
   const Delete = async () => {
-    if (!tokenExist()) navi("/auth");
+    if (!isToken()) navi("/auth");
     try {
       const id = findID(todoNumber, todoList);
       if (id) {

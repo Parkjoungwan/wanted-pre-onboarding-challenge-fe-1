@@ -11,18 +11,10 @@ import {
   TodoListInterface,
 } from "../lib/context/context";
 import TodoDetail from "../components/Todo/TodoDetail";
-import { tokenExist } from "../components/Todo/todoUtil";
 
 export default function TodoApp() {
   const stateContext = useContext(StateModalControllerContext);
   const navi = useNavigate();
-
-  //set TokenCheck
-  useEffect(() => {
-    if (!tokenExist()) {
-      navi("/auth");
-    }
-  }, [navi, stateContext]);
 
   //set Todo Infomation
   const { no } = useParams();
@@ -53,7 +45,7 @@ export default function TodoApp() {
   //LogOut
   const LogOut = () => {
     window.localStorage.removeItem("token");
-    navi("/auth");
+    window.location.replace("/auth");
   };
 
   return (

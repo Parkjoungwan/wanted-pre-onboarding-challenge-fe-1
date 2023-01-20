@@ -8,8 +8,9 @@ import {
 import { todoApi } from "../../lib/APIs/todoAPI";
 import { useNavigate } from "react-router-dom";
 import { stateHandle } from "../other/utils";
-import { findID, findIndex, tokenExist } from "./todoUtil";
+import { findID, findIndex } from "./todoUtil";
 import PublicModal from "../modals/PublicModal";
+import isToken from "../../utils/isToken";
 
 export default function TodoDetail() {
   //set Context & navi
@@ -56,7 +57,7 @@ export default function TodoDetail() {
     setUpdate(!update);
   };
   const Update = async () => {
-    if (!tokenExist()) navi("/auth");
+    if (!isToken()) navi("/auth");
     try {
       const id = findID(todoNumber, todoList);
       if (id) {

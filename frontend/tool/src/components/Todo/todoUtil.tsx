@@ -25,9 +25,3 @@ export const findIndex = (
     }
   return null;
 };
-
-export const tokenExist = ():boolean => {
-  const token = window.localStorage.getItem("token");
-  if (!token) return false;
-  return true;
-};

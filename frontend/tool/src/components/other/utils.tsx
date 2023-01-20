@@ -13,12 +13,3 @@ export const stateHandle = (
     msg: msg,
   });
 };
-
-export const tokenCheck = (stateContext: StateModalController | null) => {
-  const token = window.localStorage.getItem("token");
-  if (token) {
-    stateHandle(stateContext, "Error", "Token Already Exist.");
-    return (false);
-  }
-  return true;
-};

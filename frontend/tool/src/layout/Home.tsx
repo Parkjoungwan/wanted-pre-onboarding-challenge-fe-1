@@ -1,13 +1,12 @@
 import * as HomeStyled from "../styles/layoutStyles/HomeStyle";
 import { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { authApi } from "../lib/APIs/authAPI";
-import {
-  StateModalControllerContext,
-} from "../lib/context/context";
+import { StateModalControllerContext } from "../lib/context/context";
 import StateModal from "../components/modals/StateModal";
-import { stateHandle, tokenCheck } from "../components/other/utils";
+import { stateHandle } from "../components/other/utils";
 import { authInputValidate } from "../components/Home/validate";
+import isToken from "../utils/isToken";
 
 export default function Home() {
   const stateContext = useContext(StateModalControllerContext);
@@ -36,7 +35,8 @@ export default function Home() {
     try {
       const respone = await authApi.postLogin(email, password);
       window.localStorage.setItem("token", respone.data.token);
-      navi("/");
+      if (isToken())
+        window.location.replace("/");
     } catch (e: any) {
       stateHandle(stateContext, "Error", e.response.data.message);
     }
@@ -51,14 +51,7 @@ export default function Home() {
   };
   const preventSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  } 
-
-  //tokenCheck
-  useEffect(() => {
-    if (!tokenCheck(stateContext)) {
-      navi("/");
-    }
-  }, [navi, stateContext]);
+  };
 
   return (
     <HomeStyled.HomeDiv>
@@ -72,7 +65,12 @@ export default function Home() {
         </HomeStyled.IdDiv>
         <HomeStyled.PwDiv>
           <HomeStyled.Label htmlFor="PW">PW:</HomeStyled.Label>
-          <input id="PW" type="password" value={password} onChange={onChangePassword} />
+          <input
+            id="PW"
+            type="password"
+            value={password}
+            onChange={onChangePassword}
+          />
         </HomeStyled.PwDiv>
       </HomeStyled.InputForm>
       <HomeStyled.ButtonDiv>
