@@ -19,8 +19,8 @@ export default function TodoApp() {
 
   //set TokenCheck
   useEffect(() => {
-    if (tokenExist()) {
-      navi("/");
+    if (!tokenExist()) {
+      navi("/auth");
     }
   }, [navi, stateContext]);
 
